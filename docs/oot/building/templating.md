@@ -1,8 +1,11 @@
 ---
-layout: page
+layout: default
 title: OOT - Object Oriented Templating 
-permalink: /usage/oot/
+permalink: /oot/templating/
 ---
+
+We can define a basic `tempy.tags.Html` subclass where we define the basic shared page structure (i.e: header, footer, menu and container div structure) and then use this custom page implementation as a base class for several different pages of our site.
+
 ```python
 from tempy.widgets import TempyPage
 
@@ -78,9 +81,5 @@ class HomePage(BasePage):
                      Span()(current_content.text)),
                      Div()(comment for comment in current_content.comments))
 ```
-
-TemPy is designed to provide Object Oriented Templating. You can subclass TemPy classes and define their inner tree structure, and also add custom methods.
-
-For example we can define a basic `tempy.tags.Html` subclass where we define the basic shared page structure (i.e: header, footer, menu and container div structure) and then use this custom page implementation as a base class for several different pages of our site.
 
 All the work is made defining a custom `init` method. This method will be called when creating new instances of our class, the concept is similar to Python's `__init__` magic method. TemPy executes each base class `init` method in reverse mro, so your subclass can access all the elements defined in his parent classes. It' like the first thing every `init` does is calling `super().init`.

@@ -1,15 +1,25 @@
 ---
-layout: page
+layout: default
 title: Basic Usage
-permalink: /usage/basic/
+permalink: /usage/
 ---
 ```python
 from tempy.tags import *
+```
 
-# Create some empty TemPy objects/tags
-div = Div()
-span = Span()
+TemPy offers clean syntax for building pages in pure python. Every TemPy object is a container of other objects, when rendered TemPy objects will produce an html tag containing the `str` representation of all his children.
+```python
+# Create some TemPy objects/tags
+div = Div()(Span())
 
+# Render starting from the root element
+div.render()
+>>> <div><span></span></div>
+```
+
+TemPy objects can be arranged together dynamically to build the DOM tree. Every TemPy instance is a node of the DOM, and can be father or child of other TemPy objects.
+
+```python
 # Create non empty TemPy objects/tags
 container = Div()(
     'content: ', Div()('this is the content')
@@ -19,33 +29,14 @@ container = Div()(
 div(span)
 span(A(href='www.bar.com')('this is the link text'))
 container(test=div)
-
-# Or use the API
+```
+TemPy trees can also be arranged using the TemPy api on every DOM element:
+```python
 container.append(A(href='www.baz.com')('another useful link'))
 
 # If you gave a name to a TemPy object call him by name
 link = Link().append_to(container.test)
-
-# Add attributes and content to already placed tags
-link.attr(href='www.python.org')('This is a link to Python')
-
-# Render your TemPy tree
-container.render()
->>><div>content:
->>>    <div>this is the content</div>
->>>    <div>
->>>        <span>
->>>            <a href="www.bar.com">this is the link text</a>
->>>        </span>
->>>        <link href="www.python.org"/>
->>>    </div>
->>>    <a href="www.baz.com">another useful link</a>
->>></div>
 ```
-
-TemPy offers clean syntax for building pages in pure python. Every TemPy object is a container of other objects, when rendered TemPy objects will produce an html tag containing the `str` representation of all his children.
-
-TemPy objects can be arranged together dynamically to build the DOM tree. Every TemPy instance is a node of the DOM, and can be father or child of other TemPy objects.
 
 Every HTML tag have his corresponding TemPy class, to create a tag just instantiate the TemPy class: `Div()` will produce an object that can contain other objects (TemPy objects or not) and can be rendered into and HTML string.
 
@@ -63,13 +54,42 @@ It's possible to add elements inside TemPy objects:
 
 <aside class="warning">Attention: named insertion is safe only using Python >= 3.6</aside>
 
+
+
+### Attributes 
+
 HTML tags have attributes, and so TemPy tags have too. It's possible to define tag attributes in different ways:
 
 * during the element instantiation: `Div(some_attribute='some_value')`
 * using the `attr` API: `Div().attr(some_attribute='some_value')`
 
+```
+```python
+# Add attributes and content to already placed tags
+link = A(id='verySpecialId')('This is a link to Python')
+link.attr(href='www.python.org')
+link.render()
+>>> <a id="verySpecialId" href="www.python.org">This is a link to Python</a>
+```
+
+### Rendering
 
 The resulting tree is the DOM, and can be rendered by calling the `.render()` method.
+
+```python
+# Render your TemPy tree
+container.render()
+>>><div>content:
+>>>    <div>this is the content</div>
+>>>    <div>
+>>>        <span>
+>>>            <a href="www.bar.com">this is the link text</a>
+>>>        </span>
+>>>        <link href="www.python.org"/>
+>>>    </div>
+>>>    <a href="www.baz.com">another useful link</a>
+>>></div>
+```
 
 Calling `render` on some TemPy object will return the html representation of the tree starting from the current element including all the children.
 `tempy_object.render()` will:

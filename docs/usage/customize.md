@@ -1,17 +1,11 @@
 ---
-layout: page
-title: TemPy Tags
-permalink: /usage/classes/
+layout: default
+title: Customizing TemPy Tags
+permalink: /usage/customize/
 ---
-```python
-from tempy.tags import Div, Br
+## Subclassing Tempy tags
 
-Div.render()  # Subclass of tempy.elements.Tag
->>> <div></div>
-
-Br.render()  # Subclass of tempy.elements.VoidTag
->>> <br/>
-```
+It's possible to define custom tag subclassing either `tempy.elements.Tag` or `tempy.elements.VoidTag` providing a custom `__tag` attribute, a custom `__template` and/or a custom `render` method.
 ```python
 from tempy.elements import Tag
 
@@ -25,28 +19,10 @@ Double()('content').render()
 >>> <custom>content</custom><custom>content</custom>
 ```
 
-TemPy provides a class for every HTML5 element defined in the [W3C reference](https://www.w3.org/wiki/HTML/Elements), those classes can be imported from the `tempy.tags` submodule.
-Each Tempy Tag class is either a `tempy.elements.Tag` with a start and an end tag, that can contain something, or a `tempy.elements.VoidTag` that can not contain things and is composed of a single html tag mark.
+## TemPy Tags Factory
 
-A few TemPy tags have custom behavior:
+Another way to make custom tag is to use the `T` object. The T object is a multi-feature object that work as a class factory for custom tags.
 
-* the `tempy.tags.Comment` tag needs as first argument the comment string
-* the `tempy.tags.Doctype` tag needs as first parameter a doctype code to choose between:
-    * html
-    * html_strict
-    * html_transitional
-    * html_frameset
-    * xhtml_strict
-    * xhtml_transitional
-    * xhtml_frameset
-    * xhtml_1_1_dtd
-    * xhtml_basic_1_1
-* the `tempy.tags.Html` tag accepts the keyword argument "doctype", so it adds a Doctype tag before himself (default is "HTML" doctype)
-* a `tempy.tags.A` tag with nothing inside it will render himself with the href string inside it
-
-It's possible to define custom tag subclassing either `tempy.elements.Tag` or `tempy.elements.VoidTag` providing a custom `__tag` attribute, a custom `__template` and/or a custom `render` method.
-
-## Make custom Tempy tags
 ```python
 from tempy import T
 from tempy.elements import Tag
@@ -68,8 +44,6 @@ my_void_tag = T.Void.CustomVoid
 my_void_tag().render()
 >>> <customvoid/>
 ```
-
-Another way to make custom tag is to use the `T` object. The T object is a multi-feature object that work as a class factory for custom tags.
 
 Accessing an attribute/key of the T object will produce a TemPy Tag (of VoidTag) subclass named after the given attribute/key (in lowercase).
 

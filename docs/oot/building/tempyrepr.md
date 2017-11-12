@@ -1,7 +1,7 @@
 ---
-layout: page
+layout: default
 title: TemPy REPR
-permalink: /usage/repr/
+permalink: /oot/tempyrepr/
 ---
 ```python
 class MyClass:

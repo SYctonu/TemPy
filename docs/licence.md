@@ -1,7 +1,7 @@
 ---
-layout: page
+layout: default
 title: Licence
-permalink: /about/licence/
+permalink: /licence/
 ---
                                  Apache License
                            Version 2.0, January 2004
